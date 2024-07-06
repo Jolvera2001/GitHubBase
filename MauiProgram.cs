@@ -1,7 +1,8 @@
 ﻿using GitHubBase.Pages;
 using MauiReactor;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Maui.Storage;
 
 namespace GitHubBase
 {
@@ -10,6 +11,12 @@ namespace GitHubBase
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+            var config = new ConfigurationBuilder()
+                .SetBasePath(FileSystem.AppDataDirectory)
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+                .Build();
+
+            builder.Configuration.AddConfiguration(config);
             builder
                 .UseMauiReactorApp<AppShell>(app =>
                 {
