@@ -48,10 +48,27 @@ public class GitHubService(IConfiguration config) : IGitHubService
             throw new Exception("CSRF token mismatch");
         }
 
+        var accessToken = await ExchangeCodeForAccessTokenAsync(code);
+
+        // displays a simple HTML page to the user
         using var response = context.Response;
         {
-
+            var responseString = "<html><head><title>GitHub Login</title></head><body><h1>GitHub Login Successful</h1><p>You can now close this window.</p></body></html>";
+            var buffer = System.Text.Encoding.UTF8.GetBytes(responseString);
+            response.ContentLength64 = buffer.Length;
+            await response.OutputStream.WriteAsync(buffer, 0, buffer.Length);
         }
+
+        listener.Stop();
+        return accessToken;
+    }
+
+    private async Task<string> ExchangeCodeForAccessTokenAsync(string code)
+    {
+        var request = new OauthTokenRequest(ClientId, ClientSecret, code);
+        var token = await Client.Oauth.CreateAccessToken(request);
+
+        return token.AccessToken;
     }
 
     private static string GenerateCsrfToken()
