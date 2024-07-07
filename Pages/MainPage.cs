@@ -5,29 +5,41 @@ namespace GitHubBase.Pages
 {
     internal class MainPageState
     {
-        public int Counter { get; set; }
+        public string Nickname { get; set; } = "";
+        public string GitHubUsername { get; set; } = "";
+        public string GitHubStatus { get; set; } = "Not logged in";
     }
 
     internal partial class MainPage : Component<MainPageState>
     {
         [Inject] 
-        private IGitHubService _gitHubService;
+        private readonly IGitHubService _gitHubService;
 
         public override VisualNode Render()
          => ContentPage(
                 VStack(
-                    Label($"Counter: {State.Counter}"),
-                    HStack(
-                        Button("Increment", () => SetState(s => s.Counter++)),
-                        Button("Decrement", () => SetState(s => s.Counter--))
-                        )
-                        .Spacing(10),
-                    Button("Login with GitHub", _gitHubService.StartGithubLogin)
+                        Label("Nickname:"),
+                        Entry()
+                            .Placeholder("Nickname")
+                            .OnTextChanged((s,e) => SetState(_ => _.Nickname = e.NewTextValue)),
+                        Label("GitHub Username:"),
+                        Entry()
+                            .Placeholder("Username")
+                            .OnTextChanged((s, e) => SetState(_ => _.GitHubUsername = e.NewTextValue)),
+                        Button("Login with GitHub", StartLoginProcess), 
+                        Label(State.GitHubStatus)
                 )
                 .VCenter()
-                .Padding(15)
-                .Spacing(10)
                 .HCenter()
+                .Padding(25)
+                .Spacing(10)
             );
+
+        private async void StartLoginProcess()
+        {
+            _gitHubService.StartGithubLogin();
+            string result = await _gitHubService.ListenForCallbackAsync();
+            SetState(s => s.GitHubStatus = $"Log in Successful: {result}");
+        }
     }
 }

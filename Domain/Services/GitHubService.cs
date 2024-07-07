@@ -34,7 +34,7 @@ public class GitHubService(IConfiguration configuration) : IGitHubService
     public async Task<string> ListenForCallbackAsync()
     {
         var listener = new HttpListener();
-        listener.Prefixes.Add("http://127.0.0.1:1234/GHBaseCallback");
+        listener.Prefixes.Add("http://127.0.0.1:1234/GHBaseCallback/");
         listener.Start();
 
         var context = await listener.GetContextAsync();
@@ -60,6 +60,9 @@ public class GitHubService(IConfiguration configuration) : IGitHubService
         }
 
         listener.Stop();
+
+        Client.Credentials = new Credentials(accessToken);
+
         return accessToken;
     }
 
