@@ -1,6 +1,10 @@
-﻿using GitHubBase.Pages;
+﻿using System;
+using GitHubBase.ApplicationLayer.Services;
+using GitHubBase.Domain.Services;
+using GitHubBase.Pages;
 using MauiReactor;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Maui.Storage;
 
@@ -11,8 +15,9 @@ namespace GitHubBase
         public static MauiApp CreateMauiApp()
         {
             var builder = MauiApp.CreateBuilder();
+
             var config = new ConfigurationBuilder()
-                .SetBasePath(FileSystem.AppDataDirectory)
+                .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
                 .Build();
 
@@ -35,7 +40,7 @@ namespace GitHubBase
 #if DEBUG
         		builder.Logging.AddDebug();
 #endif
-
+            builder.Services.AddSingleton<IGitHubService, GitHubService>();
             return builder.Build();
         }
     }

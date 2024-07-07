@@ -9,12 +9,12 @@ using Octokit;
 
 namespace GitHubBase.Domain.Services;
 
-public class GitHubService(IConfiguration config) : IGitHubService
+public class GitHubService(IConfiguration configuration) : IGitHubService
 {
-    public string ClientId { get; } = config["GitHub:ClientId"];
-    public string ClientSecret { get; } = config["GitHub:clientSecret"];
-    private GitHubClient Client { get; } = new GitHubClient(new ProductHeaderValue("GitHubBase"));
-    private string? _expectedCsrfToken; 
+    public string ClientId { get; } = configuration["GitHub:ClientId"] ?? throw new ArgumentNullException(nameof(configuration), "GitHub:ClientId is not configured");
+    public string ClientSecret { get; } = configuration["GitHub:ClientSecret"] ?? throw new ArgumentNullException(nameof(configuration), "GitHub:ClientSecret is not configured");
+    private GitHubClient Client { get; } = new(new ProductHeaderValue("GitHubBase"));
+    private string? _expectedCsrfToken;
 
     public void StartGithubLogin()
     {

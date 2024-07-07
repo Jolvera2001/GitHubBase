@@ -1,4 +1,5 @@
-﻿using MauiReactor;
+﻿using GitHubBase.ApplicationLayer.Services;
+using MauiReactor;
 
 namespace GitHubBase.Pages
 {
@@ -7,33 +8,26 @@ namespace GitHubBase.Pages
         public int Counter { get; set; }
     }
 
-    internal class MainPage : Component<MainPageState>
+    internal partial class MainPage : Component<MainPageState>
     {
+        [Inject] 
+        private IGitHubService _gitHubService;
+
         public override VisualNode Render()
          => ContentPage(
-                ScrollView(
-                    VStack(
-                        Image("dotnet_bot.png")
-                            .HeightRequest(200)
-                            .HCenter()
-                            .Set(Microsoft.Maui.Controls.SemanticProperties.DescriptionProperty, "Cute dot net bot waving hi to you!"),
-
-                        Label("Hello, World!")
-                            .FontSize(32)
-                            .HCenter(),
-
-                        Label("Welcome to MauiReactor: MAUI with superpowers!")
-                            .FontSize(18)
-                            .HCenter(),
-
-                        Button(State.Counter == 0 ? "Click me" : $"Clicked {State.Counter} times!")
-                            .OnClicked(() => SetState(s => s.Counter++))
-                            .HCenter()
-                    )
-                    .VCenter()
-                    .Spacing(25)
-                    .Padding(30, 0)
+                VStack(
+                    Label($"Counter: {State.Counter}"),
+                    HStack(
+                        Button("Increment", () => SetState(s => s.Counter++)),
+                        Button("Decrement", () => SetState(s => s.Counter--))
+                        )
+                        .Spacing(10),
+                    Button("Login with GitHub", _gitHubService.StartGithubLogin)
                 )
+                .VCenter()
+                .Padding(15)
+                .Spacing(10)
+                .HCenter()
             );
     }
 }

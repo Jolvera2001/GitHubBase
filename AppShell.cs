@@ -16,11 +16,6 @@ namespace GitHubBase
                     ShellContent()
                         .Title("MainPage")
                         .RenderContent(() => new MainPage())
-                ),
-                FlyoutItem("OtherPage",
-                    ShellContent()
-                        .Title("OtherPage")
-                        .RenderContent(() => new OtherPage())
                 )
             );
     }
