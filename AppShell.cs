@@ -12,11 +12,19 @@ namespace GitHubBase
     {
         public override VisualNode Render()
             => Shell(
-                FlyoutItem("MainPage",
-                    ShellContent()
-                        .Title("MainPage")
-                        .RenderContent(() => new MainPage())
+                ShellContent()
+                    .Title("MainPage")
+                    .RenderContent(() => new MainPage())
+                    .Route("MainPage"),
+                TabBar(
+                    Tab(ShellContent()
+                        .Title("HomePage")
+                        .RenderContent(() => new HomePage())
+                        .Route("HomePage")
+                    )
+                    .Icon("home")
                 )
+                
             );
     }
 
