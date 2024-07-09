@@ -1,10 +1,7 @@
 ﻿using GitHubBase.Pages;
+using MauiIcons.Fluent;
 using MauiReactor;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Maui.Controls;
 
 namespace GitHubBase
 {
@@ -12,20 +9,27 @@ namespace GitHubBase
     {
         public override VisualNode Render()
             => Shell(
-                ShellContent()
-                    .Title("MainPage")
-                    .RenderContent(() => new MainPage())
-                    .Route("MainPage"),
-                TabBar(
-                    Tab(ShellContent()
-                        .Title("HomePage")
-                        .RenderContent(() => new HomePage())
-                        .Route("HomePage")
+                    ShellContent()
+                        .RenderContent(() => new MainPage())
+                        .Route("MainPage"),
+                    TabBar(
+                        Tab(
+                                ShellContent()
+                                    .Title("HomePage")
+                                    .RenderContent(() => new HomePage())
+                                    .Route("HomePage")
+                            )
+                            .Icon("Home"),
+                        Tab(
+                                ShellContent()
+                                    .Title("SearchPage")
+                                    .RenderContent(() => new SearchPage())
+                                    .Route("SearchPage")
+                            )
+                            .Icon("Search")
                     )
-                    .Icon("home")
                 )
-                
-            );
+                .FlyoutBehavior(FlyoutBehavior.Disabled);
     }
 
 }
