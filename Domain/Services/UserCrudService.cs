@@ -1,34 +1,42 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace GitHubBase.Domain.Services;
 
-public class UserCrudService : IUserCrudService
+public class UserCrudService(SqliteService sqliteService) : IUserCrudService
 {
+    private readonly SqliteService _sqliteService = sqliteService ?? throw new ArgumentNullException(nameof(sqliteService));
+
     public async Task<IList<User>> GetUsersAsync()
     {
-        throw new System.NotImplementedException();
+        return await _sqliteService.Users.ToListAsync();
     }
 
-    public async Task<User> GetUserAsync(int id)
+    public async Task<User?> GetUserAsync(int id)
     {
-        throw new System.NotImplementedException();
+        return await _sqliteService.Users.FindAsync(id);
     }
 
     public async Task AddUserAsync(User user)
     {
-        throw new System.NotImplementedException();
+        await _sqliteService.Users.AddAsync(user);
+        await _sqliteService.SaveChangesAsync();
     }
 
     public async Task UpdateUserAsync(User user)
     {
-        throw new System.NotImplementedException();
+        _sqliteService.Entry(user).State = EntityState.Modified;
+        await _sqliteService.SaveChangesAsync();
     }
 
     public async Task DeleteUserAsync(User user)
     {
-        throw new System.NotImplementedException();
+        _sqliteService.Users.Remove(user);
+        await _sqliteService.SaveChangesAsync();
     }
 }

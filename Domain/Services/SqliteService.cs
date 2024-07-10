@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using GitHubBase.ApplicationLayer.Services;
+﻿using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
