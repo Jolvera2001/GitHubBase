@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Entities;
+using GitHubBase.Domain.Services;
 using MauiReactor;
 
 namespace GitHubBase.Pages
@@ -18,11 +19,15 @@ namespace GitHubBase.Pages
         [Inject] 
         private readonly IGitHubService _gitHubService;
 
+        [Inject]
+        private readonly IUserCrudService _userCrudService;
+
         public override VisualNode Render()
          => ContentPage(
              HStack(
                  VStack(
-                     Label("Accounts")
+                     Label("Accounts"),
+                     Button("Add Test Account", TestCrud)
                      )
                      .VCenter()
                      .HCenter()
@@ -61,6 +66,16 @@ namespace GitHubBase.Pages
         private async void GoHome()
         {
             await MauiControls.Shell.Current.GoToAsync("//HomePage");
+        }
+
+        private async void TestCrud()
+        {
+            User testUser = new User()
+            {
+                AccountNickname = "Test",
+                GitHubUsername = "Test",
+            };
+            await _userCrudService.AddUserAsync(testUser);
         }
     }
 }

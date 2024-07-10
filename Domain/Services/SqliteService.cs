@@ -6,22 +6,24 @@ namespace GitHubBase.Domain.Services;
 
 public class SqliteService : DbContext, ISqliteService
 {
-    public DbSet<User> Users { get; set; }
-
     public SqliteService(DbContextOptions<SqliteService> options) : base(options)
     {
     }
 
+    public DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        if (!optionsBuilder.IsConfigured)
-        {
-            optionsBuilder.UseSqlite("Data Source=githubbase.db");
-        }
+        optionsBuilder.UseSqlite("Filename=githubbase.db");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<User>().ToTable("Users");
+        base.OnModelCreating(modelBuilder);
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.Id);
+        });
     }
 }

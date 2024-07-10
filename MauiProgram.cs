@@ -3,6 +3,7 @@ using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Services;
 using GitHubBase.Pages;
 using MauiReactor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -39,10 +40,19 @@ namespace GitHubBase
 #if DEBUG
         		builder.Logging.AddDebug();
 #endif
+            builder.Services.AddDbContext<SqliteService>(options => 
+                options.UseSqlite("Filename=githubbase.db"));
+
             builder.Services.AddSingleton<IGitHubService, GitHubService>();
+            builder.Services.AddScoped<IUserCrudService, UserCrudService>();
 
-            builder.Services.AddScoped<ISqliteService, SqliteService>();
+            var app = builder.Build();
 
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<SqliteService>();
+                context.Database.EnsureCreated();
+            }
 
             return builder.Build();
         }
