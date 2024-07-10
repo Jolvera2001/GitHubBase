@@ -11,13 +11,3 @@ public class User
     public string? AccessToken { get; set; }
     public DateTime AccessTokenExpiration { get; set; }
 }
-
-public class ApplicationDbContext : DbContext
-{
-    public DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Data Source=githubbase.db");
-    }
-}

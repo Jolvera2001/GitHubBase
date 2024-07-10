@@ -40,6 +40,10 @@ namespace GitHubBase
         		builder.Logging.AddDebug();
 #endif
             builder.Services.AddSingleton<IGitHubService, GitHubService>();
+
+            builder.Services.AddScoped<ISqliteService, SqliteService>();
+
+
             return builder.Build();
         }
     }
