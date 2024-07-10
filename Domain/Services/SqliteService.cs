@@ -1,6 +1,8 @@
 ﻿using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.IO;
 
 namespace GitHubBase.Domain.Services;
 
@@ -14,7 +16,8 @@ public class SqliteService : DbContext, ISqliteService
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseSqlite("Filename=githubbase.db");
+        var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "githubbase.db");
+        optionsBuilder.UseSqlite($"Filename={dbPath}");
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

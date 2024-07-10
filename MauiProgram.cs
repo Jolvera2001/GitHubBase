@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Services;
 using GitHubBase.Pages;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace GitHubBase
 {
@@ -40,8 +42,9 @@ namespace GitHubBase
 #if DEBUG
         		builder.Logging.AddDebug();
 #endif
+            var dbPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "githubbase.db");
             builder.Services.AddDbContext<SqliteService>(options => 
-                options.UseSqlite("Filename=githubbase.db"));
+                options.UseSqlite($"Filename={dbPath}"));
 
             builder.Services.AddSingleton<IGitHubService, GitHubService>();
             builder.Services.AddScoped<IUserCrudService, UserCrudService>();
