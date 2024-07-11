@@ -35,9 +35,17 @@ namespace GitHubBase.Pages
         public override VisualNode Render()
             => State.isBusy
                 ? ContentPage(
+                    VStack(
+                        ActivityIndicator()
+                            .IsRunning(State.isBusy)
+                        )
+                    )
+                : ContentPage(
                     HStack(
                             VStack(
                                     Label("Accounts"),
+                                    CollectionView()
+                                        .ItemsSource(State.Users, RenderAccounts),
                                     Button("Add Test Account", TestCrud)
                                 )
                                 .VCenter()
@@ -66,16 +74,7 @@ namespace GitHubBase.Pages
                         )
                         .Spacing(30)
                         .HCenter()
-                )
-                : ContentPage(
-                    VStack(
-                            ActivityIndicator()
-                        )
-                        .VCenter()
-                        .HCenter()
-                        .Padding(25)
-                        .Spacing(10)
-                    );
+                );
 
         private async void StartLoginProcess()
         {
@@ -97,11 +96,20 @@ namespace GitHubBase.Pages
                 GitHubUsername = "Test",
             };
             await _userCrudService.AddUserAsync(testUser);
+            SetState(FetchUsers);
         }
 
         private async void FetchUsers(MainPageState s)
         {
             s.Users = await _userCrudService.GetUsersAsync();
         }
+
+        private VisualNode RenderAccounts(User user)
+            => VStack(
+                Label(user.AccountNickname)
+                    .FontSize(20),
+                Label(user.GitHubUsername)
+                    .FontSize(15)
+            );
     }
 }
