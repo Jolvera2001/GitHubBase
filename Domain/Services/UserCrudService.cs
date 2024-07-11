@@ -12,7 +12,7 @@ public class UserCrudService(SqliteService sqliteService) : IUserCrudService
 {
     private readonly SqliteService _sqliteService = sqliteService ?? throw new ArgumentNullException(nameof(sqliteService));
 
-    public async Task<IList<User>> GetUsersAsync()
+    public async Task<List<User>> GetUsersAsync()
     {
         return await _sqliteService.Users.ToListAsync();
     }

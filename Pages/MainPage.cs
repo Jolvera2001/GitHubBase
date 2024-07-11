@@ -7,7 +7,7 @@ namespace GitHubBase.Pages
 {
     internal class MainPageState
     {
-        public bool isBusy { get; set; } = false;
+        public bool isBusy { get; set; } = true;
         public string Nickname { get; set; } = "";
         public string GitHubUsername { get; set; } = "";
         public string GitHubStatus { get; set; } = "Not logged in";
@@ -22,39 +22,60 @@ namespace GitHubBase.Pages
         [Inject]
         private readonly IUserCrudService _userCrudService;
 
+        protected override void OnMounted()
+        {
+            State.isBusy = true;
+
+            SetState(FetchUsers);
+
+            State.isBusy = false;
+            base.OnMounted();
+        }
+
         public override VisualNode Render()
-         => ContentPage(
-             HStack(
-                 VStack(
-                     Label("Accounts"),
-                     Button("Add Test Account", TestCrud)
-                     )
-                     .VCenter()
-                     .HCenter()
-                     .Padding(25)
-                     .Spacing(10),
-                 VStack(
-                     Label("Nickname:"),
-                     Entry()
-                         .Placeholder("Nickname")
-                         .OnTextChanged((s, e) => SetState(_ => _.Nickname = e.NewTextValue)),
-                     Label("GitHub Username:"),
-                     Entry()
-                         .Placeholder("Username")
-                         .OnTextChanged((s, e) => SetState(_ => _.GitHubUsername = e.NewTextValue)),
-                     Button("Login with GitHub", StartLoginProcess)
-                         .IsEnabled(!string.IsNullOrWhiteSpace(State.GitHubUsername) && !string.IsNullOrWhiteSpace(State.Nickname)),
-                     Label(State.GitHubStatus),
-                     Button("Nav to home", GoHome)
-                 )
-                 .VCenter()
-                 .HCenter()
-                 .Padding(25)
-                 .Spacing(10)
-             )
-             .Spacing(30)
-             .HCenter()
-            );
+            => State.isBusy
+                ? ContentPage(
+                    HStack(
+                            VStack(
+                                    Label("Accounts"),
+                                    Button("Add Test Account", TestCrud)
+                                )
+                                .VCenter()
+                                .HCenter()
+                                .Padding(25)
+                                .Spacing(10),
+                            VStack(
+                                    Label("Nickname:"),
+                                    Entry()
+                                        .Placeholder("Nickname")
+                                        .OnTextChanged((s, e) => SetState(_ => _.Nickname = e.NewTextValue)),
+                                    Label("GitHub Username:"),
+                                    Entry()
+                                        .Placeholder("Username")
+                                        .OnTextChanged((s, e) => SetState(_ => _.GitHubUsername = e.NewTextValue)),
+                                    Button("Login with GitHub", StartLoginProcess)
+                                        .IsEnabled(!string.IsNullOrWhiteSpace(State.GitHubUsername) &&
+                                                   !string.IsNullOrWhiteSpace(State.Nickname)),
+                                    Label(State.GitHubStatus),
+                                    Button("Nav to home", GoHome)
+                                )
+                                .VCenter()
+                                .HCenter()
+                                .Padding(25)
+                                .Spacing(10)
+                        )
+                        .Spacing(30)
+                        .HCenter()
+                )
+                : ContentPage(
+                    VStack(
+                            ActivityIndicator()
+                        )
+                        .VCenter()
+                        .HCenter()
+                        .Padding(25)
+                        .Spacing(10)
+                    );
 
         private async void StartLoginProcess()
         {
@@ -76,6 +97,11 @@ namespace GitHubBase.Pages
                 GitHubUsername = "Test",
             };
             await _userCrudService.AddUserAsync(testUser);
+        }
+
+        private async void FetchUsers(MainPageState s)
+        {
+            s.Users = await _userCrudService.GetUsersAsync();
         }
     }
 }
