@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using GitHubBase.ApplicationLayer.Services;
 using GitHubBase.Domain.Entities;
-using GitHubBase.Domain.Services;
 using MauiReactor;
 
 namespace GitHubBase.Pages
 {
     internal class MainPageState
     {
+        public bool isBusy { get; set; } = false;
         public string Nickname { get; set; } = "";
         public string GitHubUsername { get; set; } = "";
         public string GitHubStatus { get; set; } = "Not logged in";

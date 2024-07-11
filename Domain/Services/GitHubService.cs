@@ -66,6 +66,11 @@ public class GitHubService(IConfiguration configuration) : IGitHubService
         return accessToken;
     }
 
+    public Task<GitHubClient> GetClientAsync()
+    {
+        return Task.FromResult(Client);
+    }
+
     private async Task<string> ExchangeCodeForAccessTokenAsync(string code)
     {
         var request = new OauthTokenRequest(ClientId, ClientSecret, code);
