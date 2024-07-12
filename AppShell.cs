@@ -1,5 +1,5 @@
 ﻿using GitHubBase.Pages;
-using MauiIcons.Fluent;
+using MauiIcons.Material;
 using MauiReactor;
 using Microsoft.Maui.Controls;
 
@@ -19,14 +19,24 @@ namespace GitHubBase
                                     .RenderContent(() => new HomePage())
                                     .Route("HomePage")
                             )
-                            .Icon("Home"),
+                            .Icon(new FontImageSource
+                            {
+                                Glyph = "\ue88a",
+                                FontFamily = "MaterialOutlined",
+                                Size = 12
+                            }),
                         Tab(
                                 ShellContent()
                                     .Title("SearchPage")
                                     .RenderContent(() => new SearchPage())
                                     .Route("SearchPage")
                             )
-                            .Icon("Search")
+                            .Icon(new FontImageSource
+                            {
+                                Glyph = "\ue8b6",
+                                FontFamily = "MaterialOutlined",
+                                Size = 12
+                            })
                     )
                 )
                 .FlyoutBehavior(FlyoutBehavior.Disabled);

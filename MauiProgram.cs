@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 
 namespace GitHubBase
 {
@@ -37,6 +36,7 @@ namespace GitHubBase
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
+                    fonts.AddFont("MaterialSymbolsOutlined", "MaterialOutlined");
                 });
 
 #if DEBUG

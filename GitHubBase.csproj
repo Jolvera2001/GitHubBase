@@ -57,8 +57,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Fonts\MaterialSymbolsOutlined.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AathifMahir.Maui.MauiIcons.Core" Version="3.0.0" />
     <PackageReference Include="AathifMahir.Maui.MauiIcons.Fluent" Version="3.0.0" />
+    <PackageReference Include="AathifMahir.Maui.MauiIcons.Material" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.6">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
