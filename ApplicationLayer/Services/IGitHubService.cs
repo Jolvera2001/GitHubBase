@@ -10,6 +10,7 @@ public interface IGitHubService
 
     void StartGithubLogin();
     Task<string> ListenForCallbackAsync();
-
     Task<GitHubClient> GetClientAsync();
+    Task<bool> IsLoggedInAsync();
+    Task<User> GetUserAsync();
 }

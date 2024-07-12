@@ -71,6 +71,25 @@ public class GitHubService(IConfiguration configuration) : IGitHubService
         return Task.FromResult(Client);
     }
 
+    public async Task<bool> IsLoggedInAsync()
+    {
+        try
+        {
+            var user = await Client.User.Current();
+            return user != null;
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return false;
+        }
+    }
+
+    public async Task<User> GetUserAsync()
+    {
+        return await Client.User.Current();
+    }
+
     private async Task<string> ExchangeCodeForAccessTokenAsync(string code)
     {
         var request = new OauthTokenRequest(ClientId, ClientSecret, code);
