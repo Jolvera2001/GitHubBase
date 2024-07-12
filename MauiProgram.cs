@@ -36,7 +36,7 @@ namespace GitHubBase
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-SemiBold.ttf", "OpenSansSemiBold");
-                    fonts.AddFont("MaterialSymbolsOutlined", "MaterialOutlined");
+                    fonts.AddFont("MaterialSymbolsOutlined.ttf", "MaterialOutlined");
                 });
 
 #if DEBUG

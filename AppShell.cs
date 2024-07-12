@@ -15,7 +15,6 @@ namespace GitHubBase
                     TabBar(
                         Tab(
                                 ShellContent()
-                                    .Title("HomePage")
                                     .RenderContent(() => new HomePage())
                                     .Route("HomePage")
                             )
@@ -23,11 +22,10 @@ namespace GitHubBase
                             {
                                 Glyph = "\ue88a",
                                 FontFamily = "MaterialOutlined",
-                                Size = 12
+                                Size = 18
                             }),
                         Tab(
                                 ShellContent()
-                                    .Title("SearchPage")
                                     .RenderContent(() => new SearchPage())
                                     .Route("SearchPage")
                             )
@@ -35,7 +33,7 @@ namespace GitHubBase
                             {
                                 Glyph = "\ue8b6",
                                 FontFamily = "MaterialOutlined",
-                                Size = 12
+                                Size = 18
                             })
                     )
                 )
