@@ -6,8 +6,6 @@ namespace GitHubBase.Pages
     internal class MainPageState
     {
         public bool IsBusy { get; set; } = true;
-        public string Nickname { get; set; } = "";
-        public string GitHubUsername { get; set; } = "";
         public string GitHubStatus { get; set; } = "Not logged in";
     }
 
